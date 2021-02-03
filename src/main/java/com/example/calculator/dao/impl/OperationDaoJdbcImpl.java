@@ -8,10 +8,12 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.util.List;
 
+@Repository
 public class OperationDaoJdbcImpl implements OperationDao {
     private JdbcTemplate jdbcTemplate;
     private NamedParameterJdbcTemplate namedJdbcTemplate;
@@ -33,11 +35,11 @@ public class OperationDaoJdbcImpl implements OperationDao {
 
     @Override
     public List<Operation> readAllOperations() {
-        return jdbcTemplate.query("SELECT * FROM insuranceContract", new OperationRowMapper());
+        return jdbcTemplate.query("SELECT * FROM operation", new OperationRowMapper());
     }
 
     @Override
     public Operation readOperation(long id) {
-        return jdbcTemplate.queryForObject("SELECT * from insuranceContract where id = ?", new OperationRowMapper());
+        return jdbcTemplate.queryForObject("SELECT * from operation where id = ?", new OperationRowMapper());
     }
 }

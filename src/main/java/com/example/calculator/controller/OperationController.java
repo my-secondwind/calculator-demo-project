@@ -6,8 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
+@Controller
 public class OperationController {
     private final OperationService operationService;
     private static final Logger LOGGER = LoggerFactory.getLogger(OperationController.class);
@@ -23,22 +23,22 @@ public class OperationController {
         this.operationService = operationService;
     }
 
-    @PostMapping(value = "/contracts")
+    @PostMapping(value = "/operation")
     public ResponseEntity<?> create(@RequestBody Operation contract) {
         operationService.create(contract);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @GetMapping(value = "/contracts")
+    @GetMapping(value = "/operation")
     public ResponseEntity<List<Operation>> read() {
-        final List<Operation> contracts = operationService.readAll();
+        final List<Operation> operations = operationService.readAll();
 
-        return contracts != null && !contracts.isEmpty()
-                ? new ResponseEntity<>(contracts, HttpStatus.OK)
+        return operations != null && !operations.isEmpty()
+                ? new ResponseEntity<>(operations, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping(value = "/contracts/{id}")
+    @GetMapping(value = "/operation/{id}")
     public ResponseEntity<Operation> read(@PathVariable(name = "id") int id) {
         final Operation contract = operationService.read(id);
 

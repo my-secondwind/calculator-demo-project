@@ -2,22 +2,31 @@ package com.example.calculator.service.impl;
 
 import com.example.calculator.dao.OperationDao;
 import com.example.calculator.domain.Operation;
+import com.example.calculator.service.Calculator;
 import com.example.calculator.service.OperationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Service
+@Transactional
 public class OperationServiceImpl implements OperationService {
     private final OperationDao operationDao;
+    private final Calculator calculator;
     private static final Logger LOGGER = LoggerFactory.getLogger(OperationServiceImpl.class);
 
-    public OperationServiceImpl(OperationDao operationDao) {
+    public OperationServiceImpl(OperationDao operationDao, Calculator calculator) {
         this.operationDao = operationDao;
+        this.calculator = calculator;
     }
 
     @Override
     public void create(Operation operation) {
+        String operationResult = calculator.calculate(operation.getExpression());
+        operation.setResult(operationResult);
         LOGGER.info("add operation{}", operationDao);
         operationDao.createOperation(operation);
     }
