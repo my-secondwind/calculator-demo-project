@@ -13,8 +13,16 @@ class CalculatorRPNTest {
 
   @Test
     void test(){
-      calculatorRPN.calculate("4+55*(7+9)^2-sin(7)*5");
+    System.out.println(calculatorRPN.calculate("4+55*(7+9)^2-sin(7)*5"));
   }
+
+  @Test
+  void test2(){
+    System.out.println(calculatorRPN.calculate("4+55*(7+9)^2-sin7*5"));
+  }
+
+
+
   @Test
     void test3(){
       calculatorRPN.calculate("4+55*(7+9)^2-cos(7)*5");
@@ -28,9 +36,10 @@ class CalculatorRPNTest {
       calculatorRPN.calculate("4+55*(7+9)^2-ctg(7)*5");
   }
 
+
     @Test
-    void test2(){
-        calculatorRPN.calculate("1+1");
+    void test6(){
+      System.out.println(calculatorRPN.calculate("-4+5*(-8*2)"));
     }
 
 

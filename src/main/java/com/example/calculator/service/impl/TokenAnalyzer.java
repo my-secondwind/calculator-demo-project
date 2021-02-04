@@ -26,7 +26,7 @@ public class TokenAnalyzer {
         if ("*".equals(operation) || "/".equals(operation)) return 2;
         if (TRIGONOMETRIC_OPERATIONS.contains(operation) || "^".equals(operation)) return 3;
 
-        throw new TokenException("Invalid operator type");
+        throw new TokenException("Invalid operator type" + operation);
     }
 
     public static Double evaluateOperation(String operator, double firstValue, double secondValue) {

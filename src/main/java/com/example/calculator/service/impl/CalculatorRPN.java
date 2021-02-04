@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static com.example.calculator.service.impl.TokenAnalyzer.REGEX_FOR_TRIG_OPERATIONS;
 import static com.example.calculator.service.impl.TokenAnalyzer.TRIGONOMETRIC_OPERATIONS;
@@ -22,8 +24,11 @@ public class CalculatorRPN implements Calculator {
     public String calculate(String expression) {
         String result = "0";
         try {
+            expression = unaryMinusCorrection(expression);
             convertStringToTokens(expression);
+            System.out.println(expressionByList);
             convertToReversePolishNotation();
+            System.out.println(expressionByList);
             result = evaluateReversePolishNotation();
         } catch (Exception e) {
             LOGGER.error("Error during calculation ", e);
@@ -33,6 +38,7 @@ public class CalculatorRPN implements Calculator {
 
     private void convertStringToTokens(String expression) {
         expression = expression.replaceAll("[+\\-*/()^]" + REGEX_FOR_TRIG_OPERATIONS, " $0 ");
+        expression = expression.replaceAll("^\\s", "");
         expressionByList = List.of(expression.split("\\s+"));
     }
 
@@ -101,5 +107,18 @@ public class CalculatorRPN implements Calculator {
             }
         }
         return stack.pop();
+    }
+
+    private String unaryMinusCorrection(String expression) {
+        expression = expression.replaceAll("(^-\\d)", "(0$0)");
+        Pattern pattern = Pattern.compile("(\\(-\\d)");
+        Matcher matcher = pattern.matcher(expression);
+        while (matcher.find()){
+            String str = matcher.group();
+            String newStr = "((0" + str.substring(1) + ")";
+            expression = expression.replace(str, newStr);
+        }
+        System.out.println(expression);
+        return expression;
     }
 }
