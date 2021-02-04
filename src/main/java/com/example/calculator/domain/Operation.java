@@ -2,15 +2,16 @@ package com.example.calculator.domain;
 
 import java.util.Date;
 import java.util.Objects;
+import java.util.UUID;
 
 public class Operation {
-    private final Long id;
+    private final UUID id;
     private final String expression;
     private String result;
     private final Date enterDate;
     private final Long userId;
 
-    public Operation(Long id, String expression, String result, Date enterDate, Long userId) {
+    public Operation(UUID id, String expression, String result, Date enterDate, Long userId) {
         this.id = id;
         this.expression = expression;
         this.result = result;
@@ -18,7 +19,7 @@ public class Operation {
         this.userId = userId;
     }
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 

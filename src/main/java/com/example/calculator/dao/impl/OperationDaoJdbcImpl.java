@@ -4,6 +4,7 @@ import com.example.calculator.dao.OperationDao;
 import com.example.calculator.dao.mapper.OperationRowMapper;
 import com.example.calculator.domain.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -12,14 +13,15 @@ import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.util.List;
+import java.util.UUID;
 
 @Repository
 public class OperationDaoJdbcImpl implements OperationDao {
     private JdbcTemplate jdbcTemplate;
     private NamedParameterJdbcTemplate namedJdbcTemplate;
 
-    private static final String INSERT_SQL = "INSERT INTO operation (expression, result, enterDate, userId) " +
-            "VALUES (:expression, :result, :enterDate, :userId) ";
+    private static final String INSERT_SQL = "INSERT INTO operation (id, expression, result, enterDate, userId) " +
+            "VALUES (:id, :expression, :result, :enterDate, :userId) ";
 
     @Autowired
     public void setDataSource(DataSource dataSource) {
@@ -39,7 +41,11 @@ public class OperationDaoJdbcImpl implements OperationDao {
     }
 
     @Override
-    public Operation readOperation(long id) {
-        return jdbcTemplate.queryForObject("SELECT * from operation where id = ?", new OperationRowMapper());
+    public Operation readOperation(UUID id) {
+        try {
+            return jdbcTemplate.queryForObject("SELECT * from operation where id = ?", new OperationRowMapper(), id);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 }

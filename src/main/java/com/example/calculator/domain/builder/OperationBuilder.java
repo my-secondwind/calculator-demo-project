@@ -3,15 +3,16 @@ package com.example.calculator.domain.builder;
 import com.example.calculator.domain.Operation;
 
 import java.util.Date;
+import java.util.UUID;
 
 public class OperationBuilder {
-    private Long id;
+    private UUID id;
     private String expression;
     private String result;
     private Date enterDate;
     private Long userId;
 
-    public OperationBuilder withId(Long id) {
+    public OperationBuilder withId(UUID id) {
         this.id = id;
         return this;
     }
@@ -36,7 +37,7 @@ public class OperationBuilder {
         return this;
     }
 
-    public Operation createOperation() {
+    public Operation build() {
         return new Operation(id, expression, result, enterDate, userId);
     }
 }

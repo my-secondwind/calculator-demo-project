@@ -25,7 +25,6 @@ public class CalculatorRPN implements Calculator {
             convertStringToTokens(expression);
             convertToReversePolishNotation();
             result = evaluateReversePolishNotation();
-            System.out.println(result);
         } catch (Exception e) {
             LOGGER.error("Error during calculation ", e);
         }
@@ -35,7 +34,6 @@ public class CalculatorRPN implements Calculator {
     private void convertStringToTokens(String expression) {
         expression = expression.replaceAll("[+\\-*/()^]" + REGEX_FOR_TRIG_OPERATIONS, " $0 ");
         expressionByList = List.of(expression.split("\\s+"));
-        System.out.println(expressionByList);
     }
 
     private void convertToReversePolishNotation() {
@@ -77,7 +75,6 @@ public class CalculatorRPN implements Calculator {
         while (!stack.empty()) {
             outputTokenList.add(stack.pop());
         }
-        System.out.println(outputTokenList);
         expressionByList = outputTokenList;
     }
 
@@ -94,14 +91,12 @@ public class CalculatorRPN implements Calculator {
                 double value = Double.parseDouble(stack.pop());
                 Double result = TokenAnalyzer.evaluateOperation(token, value);
                 stack.push(result.toString());
-                System.out.println(value + " " + token + " " + result);
                 continue;
             }
             if (TokenType.Operator.equals(tokenType)) {
                 double firstValue = Double.parseDouble(stack.pop());
                 double secondValue = Double.parseDouble(stack.pop());
                 Double result = TokenAnalyzer.evaluateOperation(token, firstValue, secondValue);
-                System.out.println(firstValue + " " + secondValue + " " + token + " " + result);
                 stack.push(result.toString());
             }
         }
