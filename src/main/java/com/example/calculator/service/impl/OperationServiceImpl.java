@@ -43,9 +43,9 @@ public class OperationServiceImpl implements OperationService {
     }
 
     @Override
-    public List<Operation> readAll() {
+    public List<Operation> readFiltered(String expression, Date startDate, Date endDate) {
         LOGGER.info("read all operations");
-        return operationDao.readAllOperations();
+        return operationDao.readFilteredOperations(expression, startDate, endDate);
     }
 
     @Override

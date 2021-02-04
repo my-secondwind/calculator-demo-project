@@ -12,6 +12,9 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -36,8 +39,14 @@ public class OperationDaoJdbcImpl implements OperationDao {
     }
 
     @Override
-    public List<Operation> readAllOperations() {
-        return jdbcTemplate.query("SELECT * FROM operation", new OperationRowMapper());
+    public List<Operation> readFilteredOperations(String expression, Date startDate, Date endDate) {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String request = "WHERE enterDate >= '" + dateFormat.format(startDate) +
+                         "' AND enterDate <= '" + dateFormat.format(endDate) + "'";
+        if (expression!= null){
+            request = request + " AND expression = '" + expression + "'";
+        }
+        return jdbcTemplate.query("SELECT * FROM operation " + request, new OperationRowMapper());
     }
 
     @Override
