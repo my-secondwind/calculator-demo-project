@@ -5,6 +5,7 @@ import com.example.calculator.service.OperationService;
 import com.example.calculator.service.validator.OperationValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Controller
@@ -51,8 +54,8 @@ public class OperationController {
 
     @GetMapping(value = "/operation")
     public ResponseEntity<List<Operation>> read(@RequestParam(required = false) String expression,
-                                                @RequestParam @DateTimeFormat(pattern="yyyy-MM-dd") Date startDate,
-                                                @RequestParam @DateTimeFormat(pattern="yyyy-MM-dd") Date endDate) {
+                                                @RequestParam(required = false, defaultValue = "today") @DateTimeFormat(pattern="yyyy-MM-dd") Date startDate,
+                                                @RequestParam(required = false, defaultValue = "today") @DateTimeFormat(pattern="yyyy-MM-dd") Date endDate) {
         final List<Operation> operations = operationService.readFiltered(expression, startDate, endDate);
 
         return operations != null && !operations.isEmpty()
@@ -72,6 +75,7 @@ public class OperationController {
     @InitBinder
     private void initBinder(WebDataBinder binder) {
         binder.setValidator(operationValidator);
+        binder.registerCustomEditor(Date.class, getDateEditor());
     }
 
     private Map<String, String> getErrorsMap(BindingResult result) {
@@ -82,5 +86,20 @@ public class OperationController {
             errors.put(fieldName, errorMessage);
         });
         return errors;
+    }
+
+
+    private CustomDateEditor getDateEditor() {
+        final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        return new CustomDateEditor(dateFormat, true) {
+            @Override
+            public void setAsText(String text) throws IllegalArgumentException {
+                if ("today".equals(text)) {
+                    setValue(new Date());
+                } else {
+                    super.setAsText(text);
+                }
+            }
+        };
     }
 }

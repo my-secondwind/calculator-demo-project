@@ -26,9 +26,7 @@ public class CalculatorRPN implements Calculator {
         try {
             expression = unaryMinusCorrection(expression);
             convertStringToTokens(expression);
-            System.out.println(expressionByList);
             convertToReversePolishNotation();
-            System.out.println(expressionByList);
             result = evaluateReversePolishNotation();
         } catch (Exception e) {
             LOGGER.error("Error during calculation ", e);
@@ -118,7 +116,6 @@ public class CalculatorRPN implements Calculator {
             String newStr = "((0" + str.substring(1) + ")";
             expression = expression.replace(str, newStr);
         }
-        System.out.println(expression);
         return expression;
     }
 }
