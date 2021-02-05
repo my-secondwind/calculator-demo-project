@@ -16,7 +16,7 @@ public class OperationRowMapper implements RowMapper<Operation> {
                 .withExpression(resultSet.getString("expression"))
                 .withResult(resultSet.getString("result"))
                 .withEnterDate(resultSet.getDate("enterDate"))
-                .withUser(resultSet.getLong("userId"))
+                .withUser(resultSet.getString("username"))
                 .build();
     }
 }

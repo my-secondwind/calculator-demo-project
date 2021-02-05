@@ -9,7 +9,7 @@ import java.util.UUID;
 public interface OperationDao {
     void createOperation(Operation operation);
 
-    List<Operation> readFilteredOperations(String expression, Date startDate, Date endDate);
+    List<Operation> readFilteredOperations(String expression, Date startDate, Date endDate, String username);
 
     Operation readOperation(UUID id);
 }

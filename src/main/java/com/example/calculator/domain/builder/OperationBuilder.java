@@ -10,7 +10,7 @@ public class OperationBuilder {
     private String expression;
     private String result;
     private Date enterDate;
-    private Long userId;
+    private String username;
 
     public OperationBuilder withId(UUID id) {
         this.id = id;
@@ -32,12 +32,12 @@ public class OperationBuilder {
         return this;
     }
 
-    public OperationBuilder withUser(Long userId) {
-        this.userId = userId;
+    public OperationBuilder withUser(String username) {
+        this.username = username;
         return this;
     }
 
     public Operation build() {
-        return new Operation(id, expression, result, enterDate, userId);
+        return new Operation(id, expression, result, enterDate, username);
     }
 }

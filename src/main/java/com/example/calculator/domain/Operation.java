@@ -9,14 +9,14 @@ public class Operation {
     private final String expression;
     private String result;
     private final Date enterDate;
-    private final Long userId;
+    private final String username;
 
-    public Operation(UUID id, String expression, String result, Date enterDate, Long userId) {
+    public Operation(UUID id, String expression, String result, Date enterDate, String username) {
         this.id = id;
         this.expression = expression;
         this.result = result;
         this.enterDate = enterDate;
-        this.userId = userId;
+        this.username = username;
     }
 
     public UUID getId() {
@@ -31,8 +31,8 @@ public class Operation {
         return enterDate;
     }
 
-    public Long getUserId() {
-        return userId;
+    public String getUsername() {
+        return username;
     }
 
     public String getResult() {
@@ -50,7 +50,7 @@ public class Operation {
                 ", expression='" + expression + '\'' +
                 ", result='" + result + '\'' +
                 ", enterDate=" + enterDate +
-                ", user='" + userId + '\'' +
+                ", user='" + username + '\'' +
                 '}';
     }
 
@@ -63,11 +63,11 @@ public class Operation {
                 Objects.equals(expression, operation.expression) &&
                 Objects.equals(result, operation.result) &&
                 Objects.equals(enterDate, operation.enterDate) &&
-                Objects.equals(userId, operation.userId);
+                Objects.equals(username, operation.username);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, expression, result, enterDate, userId);
+        return Objects.hash(id, expression, result, enterDate, username);
     }
 }

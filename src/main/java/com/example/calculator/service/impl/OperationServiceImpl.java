@@ -7,6 +7,7 @@ import com.example.calculator.service.Calculator;
 import com.example.calculator.service.OperationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,7 +28,7 @@ public class OperationServiceImpl implements OperationService {
     }
 
     @Override
-    public Operation create(Operation operation) {
+    public Operation create(Operation operation, User user) {
         String operationResult = calculator.calculate(operation.getExpression());
 
         Operation operationToSave = new OperationBuilder()
@@ -35,7 +36,7 @@ public class OperationServiceImpl implements OperationService {
                 .withExpression(operation.getExpression())
                 .withResult(operationResult)
                 .withEnterDate(new Date())
-                .withUser(1L)
+                .withUser(user.getUsername())
                 .build();
         LOGGER.info("add operation{}", operationToSave);
         operationDao.createOperation(operationToSave);
@@ -43,9 +44,9 @@ public class OperationServiceImpl implements OperationService {
     }
 
     @Override
-    public List<Operation> readFiltered(String expression, Date startDate, Date endDate) {
+    public List<Operation> readFiltered(String expression, Date startDate, Date endDate, String username) {
         LOGGER.info("read all operations");
-        return operationDao.readFilteredOperations(expression, startDate, endDate);
+        return operationDao.readFilteredOperations(expression, startDate, endDate, username);
     }
 
     @Override

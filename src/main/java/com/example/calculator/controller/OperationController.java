@@ -10,6 +10,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -41,7 +43,9 @@ public class OperationController {
     }
 
     @PostMapping(value = "/operation")
-    public ResponseEntity<?> create(@RequestBody @Validated Operation operation, BindingResult result) {
+    public ResponseEntity<?> create(@RequestBody @Validated Operation operation,
+                                    BindingResult result,
+                                    @AuthenticationPrincipal User user) {
         if (result.hasErrors()) {
             LOGGER.warn("error occurs during expression validation {}", operation);
             return new ResponseEntity<>(
@@ -49,7 +53,7 @@ public class OperationController {
                     HttpStatus.BAD_REQUEST);
         }
 
-        Operation savedOperation = operationService.create(operation);
+        Operation savedOperation = operationService.create(operation, user);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
@@ -61,8 +65,9 @@ public class OperationController {
     @GetMapping(value = "/operation")
     public ResponseEntity<List<Operation>> read(@RequestParam(required = false) String expression,
                                                 @RequestParam(required = false, defaultValue = "today") @DateTimeFormat(pattern="yyyy-MM-dd") Date startDate,
-                                                @RequestParam(required = false, defaultValue = "today") @DateTimeFormat(pattern="yyyy-MM-dd") Date endDate) {
-        final List<Operation> operations = operationService.readFiltered(expression, startDate, endDate);
+                                                @RequestParam(required = false, defaultValue = "today") @DateTimeFormat(pattern="yyyy-MM-dd") Date endDate,
+                                                @RequestParam(required = false) String username) {
+        final List<Operation> operations = operationService.readFiltered(expression, startDate, endDate, username);
 
         return operations != null && !operations.isEmpty()
                 ? new ResponseEntity<>(operations, HttpStatus.OK)

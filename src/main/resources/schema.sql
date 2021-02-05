@@ -5,8 +5,8 @@ CREATE TABLE operation
     id                 UUID PRIMARY KEY,
     expression         VARCHAR(250) NOT NULL,
     result             VARCHAR(250) NOT NULL,
-    enterDate          DATE       NOT NULL,
-    userId             LONG        NOT NULL
+    enterDate          DATE         NOT NULL,
+    username           VARCHAR(250) NOT NULL
 );
 
 DROP TABLE IF EXISTS user_role;

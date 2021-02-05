@@ -39,12 +39,15 @@ public class OperationDaoJdbcImpl implements OperationDao {
     }
 
     @Override
-    public List<Operation> readFilteredOperations(String expression, Date startDate, Date endDate) {
+    public List<Operation> readFilteredOperations(String expression, Date startDate, Date endDate, String username) {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String request = "WHERE enterDate >= '" + dateFormat.format(startDate) +
                          "' AND enterDate <= '" + dateFormat.format(endDate) + "'";
         if (expression!= null){
             request = request + " AND expression = '" + expression + "'";
+        }
+        if (username!= null){
+            request = request + " AND username = '" + username + "'";
         }
         return jdbcTemplate.query("SELECT * FROM operation " + request, new OperationRowMapper());
     }
