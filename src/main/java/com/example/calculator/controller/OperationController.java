@@ -17,6 +17,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.net.URI;
 import java.text.DateFormat;
@@ -32,6 +33,11 @@ public class OperationController {
     public OperationController(OperationService operationService, OperationValidator operationValidator) {
         this.operationService = operationService;
         this.operationValidator = operationValidator;
+    }
+
+    @GetMapping(value = "/")
+    public RedirectView redirect(){
+        return new RedirectView("/operation");
     }
 
     @PostMapping(value = "/operation")
