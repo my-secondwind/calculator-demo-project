@@ -23,8 +23,8 @@ public class OperationDaoJdbcImpl implements OperationDao {
     private JdbcTemplate jdbcTemplate;
     private NamedParameterJdbcTemplate namedJdbcTemplate;
 
-    private static final String INSERT_SQL = "INSERT INTO operation (id, expression, result, enterDate, userId) " +
-            "VALUES (:id, :expression, :result, :enterDate, :userId) ";
+    private static final String INSERT_SQL = "INSERT INTO operation (id, expression, result, enterDate, username) " +
+            "VALUES (:id, :expression, :result, :enterDate, :username) ";
 
     @Autowired
     public void setDataSource(DataSource dataSource) {
