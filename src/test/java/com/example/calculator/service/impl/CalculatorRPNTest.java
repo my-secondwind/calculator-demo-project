@@ -2,46 +2,43 @@ package com.example.calculator.service.impl;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class CalculatorRPNTest {
 
-    CalculatorRPN calculatorRPN = new CalculatorRPN();
-
-  @Test
-    void test(){
-    System.out.println(calculatorRPN.calculate("4+55*(7+9)^2-sin(7)*5"));
-  }
-
-  @Test
-  void test2(){
-    System.out.println(calculatorRPN.calculate("4+55*(7+9)^2-sin7*5"));
-  }
-
-
-
-  @Test
-    void test3(){
-      calculatorRPN.calculate("4+55*(7+9)^2-cos(7)*5");
-  }
-  @Test
-    void test4(){
-      calculatorRPN.calculate("4+55*(7+9)^2-tg(7)*5");
-  }
-  @Test
-    void test5(){
-      calculatorRPN.calculate("4+55*(7+9)^2-ctg(7)*5");
-  }
-
+    @Test
+    void simpleExpression() {
+        CalculatorRPN calculatorRPN = new CalculatorRPN();
+        String actualResult = calculatorRPN.calculate("2+2");
+        assertEquals("4.0", actualResult);
+    }
 
     @Test
-    void test6(){
-      System.out.println(calculatorRPN.calculate("-4+5*(-8*2)"));
+    void complicateExpression() {
+        CalculatorRPN calculatorRPN = new CalculatorRPN();
+        String actualResult = calculatorRPN.calculate("4+55*(7+9)^2-sin(7)*5");
+        assertEquals("14080.715067006406", actualResult);
     }
 
 
+    @Test
+    void unaryMinusCheck() {
+        CalculatorRPN calculatorRPN = new CalculatorRPN();
+        String actualResult = calculatorRPN.calculate("-4+5*(-8*2)");
+        assertEquals("-84.0", actualResult);
+    }
 
+    @Test
+    void divisionByZero() {
+        CalculatorRPN calculatorRPN = new CalculatorRPN();
+        String actualResult = calculatorRPN.calculate("5/0");
+        assertEquals("Infinity", actualResult);
+    }
+
+    @Test
+    void simpleExpressionWithDecimalPart() {
+        CalculatorRPN calculatorRPN = new CalculatorRPN();
+        String actualResult = calculatorRPN.calculate("2.5+2");
+        assertEquals("4.5", actualResult);
+    }
 }

@@ -14,6 +14,7 @@ public class TokenAnalyzer {
 
     public static TokenType getTokenType(String token) {
         if (Pattern.matches("\\d+", token)) return TokenType.Number;
+        if (Pattern.matches("\\d+\\.\\d+", token)) return TokenType.Number;
         if (Pattern.matches("[+\\-*/^]|" + REGEX_FOR_TRIG_OPERATIONS, token)) return TokenType.Operator;
         if (Pattern.matches("[(]", token)) return TokenType.OpenParenthesis;
         if (Pattern.matches("[)]", token)) return TokenType.CloseParenthesis;
